@@ -26,34 +26,22 @@ class LoggedCommand(BaseCommand):
     def command_name(self):
         return self.__module__.split(".")[-1]
 
-    def add_arguments(self, parser):
-        parser.add_argument(
-            "--disable-logging",
-            action="store_true",
-            dest="disable",
-            default=False,
-            help="Disable the logging of the command",
-        )
-
     def do_command(self, *args, **options):
         raise NotImplementedError()
 
     def handle(self, *args, **options):
         """Run the do_command method and log the output."""
-        disable = options["disable"]
         log = ManagementCommandLog(
             app_name=self.app_name, command_name=self.command_name
         )
         log.start()
         try:
-            result = self.do_command(*args, **options)
+            output = self.do_command(*args, **options)
+            log.stop(output=output, exit_code=0)
         except Exception as ex:
             logger.exception("Error running management command: %s", log)
-            log.exit_code = 1
-            result = {"error": str(ex)}
-        log.stop(result)
-        if not disable:
-            log.save()
+            output = f"ERROR: see logs for full traceback [\"{ex}\"]."
+            log.stop(output=output, exit_code=1)
 
 
 class TransactionLoggedCommand(LoggedCommand):

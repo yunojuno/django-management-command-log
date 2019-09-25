@@ -1,13 +1,6 @@
-import dj_database_url
+SECRET_KEY = "TOP_SECRET_TESTS"
 
-SECRET_KEY = "fake-key"
-
-DATABASES = {
-    "default": dj_database_url.config(
-        default="postgres://postgres:postgres@localhost:5432/command_log"
-    )
-}
-
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 
 INSTALLED_APPS = [
     "django.contrib.admin",

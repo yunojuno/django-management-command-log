@@ -12,7 +12,7 @@ def test_command__exit_code_0():
     # implicit assert that there is only one object
     log = ManagementCommandLog.objects.get()
     assert log.exit_code == 0
-    assert log.result == test_command.DEFAULT_RETURN_VALUE
+    assert log.output == str(test_command.DEFAULT_RETURN_VALUE)
 
 
 @pytest.mark.django_db
@@ -21,14 +21,7 @@ def test_command__exit_code_1():
     # implicit assert that there is only one object
     log = ManagementCommandLog.objects.get()
     assert log.exit_code == 1
-    assert log.result == {"error": test_command.EXCEPTION_MSG}
-
-
-@pytest.mark.django_db
-def test_command__disable_logging():
-    # explicitly disable logging
-    call_command("test_command", "--disable-logging")
-    assert not ManagementCommandLog.objects.exists()
+    assert log.output.startswith("ERROR: see logs for full traceback")
 
 
 @pytest.mark.django_db

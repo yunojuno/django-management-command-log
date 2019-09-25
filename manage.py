@@ -1,11 +1,11 @@
 """
-This copy of manage.py explicitly sets the minimum settings required to be
-able to manage migrations for the command_log app, and no more. It is not
-designed to be used to run a site.
+Minimal settings required to be able to run `makemigrations` and to spin up the admin
+site so that you can test it.
 
 """
-import os
 import sys
+
+DEFAULT_DATABASE_URL = "postgres://postgres:postgres@localhost:5432/command_log"
 
 if __name__ == "__main__":
 
@@ -16,14 +16,7 @@ if __name__ == "__main__":
         DEBUG=True,
         SECRET_KEY="TOP_SECRET",
         DATABASES={
-            "default": {
-                "ENGINE": "django.db.backends.postgresql",
-                "NAME": os.getenv("DB_NAME", "command_log"),
-                "USER": os.getenv("DB_USER", "postgres"),
-                "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
-                "HOST": os.getenv("DB_HOST", "localhost"),
-                "PORT": os.getenv("DB_PORT", "5432"),
-            }
+            "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "command_log.db"}
         },
         INSTALLED_APPS=(
             "django.contrib.admin",
@@ -33,6 +26,8 @@ if __name__ == "__main__":
             "django.contrib.messages",
             "django.contrib.staticfiles",
             "command_log",
+            # contains test_command and test_transaction_command that you can
+            # use to generate log objects.
             "tests",
         ),
         MIDDLEWARE=[

@@ -1,4 +1,3 @@
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.timezone import now
 
@@ -13,14 +12,16 @@ class ManagementCommandLog(models.Model):
     command_name = models.CharField(
         help_text="The management command that was executed", max_length=100
     )
-    started_at = models.DateTimeField()
-    finished_at = models.DateTimeField()
+    started_at = models.DateTimeField(null=True, blank=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
     exit_code = models.IntegerField(
-        default=0, help_text="0 if the command ran without error."
+        default=None,
+        help_text="0 if the command ran without error.",
+        null=True,
+        blank=True,
     )
-    result = JSONField(
-        default=dict,
-        help_text="The return value of the command (must be JSON serializable)",
+    output = models.TextField(
+        help_text="The output of the command (stored as a string)",
         null=True,
         blank=True,
     )
@@ -43,27 +44,19 @@ class ManagementCommandLog(models.Model):
             return None
 
     def start(self):
-        """
-        Mark the beginning of a management command execution.
-
-        This method does not save object.
-
-        """
-        if self.started_at:
-            raise ValueError("Cannot call start twice on the same log.")
+        """Mark the beginning of a management command execution."""
+        if any([self.started_at, self.finished_at, self.output, self.exit_code]):
+            raise ValueError("Log object is already in use.")
         self.started_at = now()
-        self.finished_at = None
+        self.save()
 
-    def stop(self, result=None):
-        """
-        Mark the end of a management command execution.
-
-        This method does not save the object.
-
-        """
+    def stop(self, *, output, exit_code):
+        """Mark the end of a management command execution."""
         if not self.started_at:
-            raise ValueError("Cannot call finish before start.")
-        if self.finished_at:
-            raise ValueError("Cannot call finish twice on the same log.")
+            raise ValueError("Log object has not been started.")
+        if any([self.finished_at, self.output, self.exit_code]):
+            raise ValueError("Log object has already completed.")
         self.finished_at = now()
-        self.result = result
+        self.output = output
+        self.exit_code = exit_code
+        self.save()
