@@ -6,7 +6,6 @@ DEFAULT_RETURN_VALUE = {"updated": 1}
 
 
 class Command(LoggedCommand):
-
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument(

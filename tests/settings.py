@@ -1,9 +1,11 @@
 import dj_database_url
 
-SECRET_KEY = 'fake-key'
+SECRET_KEY = "fake-key"
 
-DATABASES= {
-    "default": dj_database_url.config(default="postgres://postgres:postgres@localhost:5432/command_log")
+DATABASES = {
+    "default": dj_database_url.config(
+        default="postgres://postgres:postgres@localhost:5432/command_log"
+    )
 }
 
 
@@ -17,4 +19,3 @@ INSTALLED_APPS = [
     "command_log",
     "tests",
 ]
-

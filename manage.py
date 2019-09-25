@@ -33,7 +33,7 @@ if __name__ == "__main__":
             "django.contrib.messages",
             "django.contrib.staticfiles",
             "command_log",
-            "tests"
+            "tests",
         ),
         MIDDLEWARE=[
             "django.middleware.security.SecurityMiddleware",
