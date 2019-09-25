@@ -44,13 +44,20 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
     list_display = ("management_command", "started_at", "duration", "exit_code")
     list_filter = ("started_at", "app_name", "command_name")
     search_fields = ("command_name",)
-    readonly_fields = ("management_command", "started_at", "finished_at", "duration", "result_")
+    readonly_fields = (
+        "management_command",
+        "started_at",
+        "finished_at",
+        "duration",
+        "exit_code",
+        "result_",
+    )
     exclude = ("app_name", "command_name", "result")
 
     def result_(self, obj):
         return format_json_for_admin(obj.result)
 
-    result_.short_description = "Result (formatted)"
+    result_.short_description = "Result"
 
 
 admin.site.register(ManagementCommandLog, ManagementCommandLogAdmin)

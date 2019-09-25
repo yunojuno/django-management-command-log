@@ -21,7 +21,7 @@ def test_command__exit_code_1():
     # implicit assert that there is only one object
     log = ManagementCommandLog.objects.get()
     assert log.exit_code == 1
-    assert log.result == {"error": True, "message": test_command.EXCEPTION_MSG}
+    assert log.result == {"error": test_command.EXCEPTION_MSG}
 
 
 @pytest.mark.django_db

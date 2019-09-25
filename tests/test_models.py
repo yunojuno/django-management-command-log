@@ -24,43 +24,29 @@ def test_start__twice_fails():
         log.start()
 
 
-def test_finish():
+def test_stop():
     log = ManagementCommandLog()
     log.start()
-    log.finish({})
+    log.stop({})
     assert log.result == {}
     assert log.duration is not None
     assert log.exit_code == 0
 
 
-def test_finish__before_start_fails():
-    # cannot call finish before the timer has started
+def test_stop__before_start_fails():
+    # cannot call stop before the timer has started
     log = ManagementCommandLog()
     with pytest.raises(ValueError):
-        log.finish({})
+        log.stop({})
 
 
-def test_finish__twice_fails():
-    # cannot call finish a second time.
+def test_stop__twice_fails():
+    # cannot call stop a second time.
     log = ManagementCommandLog()
     log.start()
-    log.finish({})
+    log.stop({})
     with pytest.raises(ValueError):
-        log.finish({})
-
-
-def test_exit_code__0():
-    log = ManagementCommandLog()
-    log.start()
-    log.finish({})
-    assert log.exit_code == 0
-
-
-def test_exit_code__1():
-    log = ManagementCommandLog()
-    log.start()
-    log.finish({"error": True})
-    assert log.exit_code == 1
+        log.stop({})
 
 
 def test_duration():

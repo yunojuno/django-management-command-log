@@ -7,7 +7,6 @@ class ManagementCommandLog(models.Model):
 
     """Records the running of a management command."""
 
-    # when did the event occur
     app_name = models.CharField(
         help_text="The app containing the management command", max_length=100
     )
@@ -16,11 +15,14 @@ class ManagementCommandLog(models.Model):
     )
     started_at = models.DateTimeField()
     finished_at = models.DateTimeField()
+    exit_code = models.IntegerField(
+        max_length=3, default=0, help_text="0 if the command ran without error."
+    )
     result = JSONField(
         default=dict,
         help_text="The return value of the command (must be JSON serializable)",
         null=True,
-        blank=True
+        blank=True,
     )
 
     def __str__(self):
@@ -40,11 +42,6 @@ class ManagementCommandLog(models.Model):
         except TypeError:
             return None
 
-    @property
-    def exit_code(self):
-        """Return 1 if the command raised an error, else 0."""
-        return 1 if "error" in self.result else 0
-
     def start(self):
         """
         Mark the beginning of a management command execution.
@@ -57,7 +54,7 @@ class ManagementCommandLog(models.Model):
         self.started_at = now()
         self.finished_at = None
 
-    def finish(self, result):
+    def stop(self, result=None):
         """
         Mark the end of a management command execution.
 
