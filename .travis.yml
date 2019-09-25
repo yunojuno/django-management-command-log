@@ -1,9 +1,13 @@
-language: python
+language:
+  python
 python:
-  - "3.7"
+  "3.7"
 before_install:
-  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+  curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+  source $HOME/.poetry/env
 install:
-  - poetry install -v
+  poetry install -v
 script:
-  - poetry run pytest --cov=command_log tests
+  poetry run pytest --cov=command_log tests
+addons:
+  postgresql: "9.6"
