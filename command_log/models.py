@@ -50,7 +50,10 @@ class ManagementCommandLog(models.Model):
         This method does not save object.
 
         """
+        if self.started_at:
+            raise ValueError("Cannot call start twice on the same log.")
         self.started_at = now()
+        self.finished_at = None
 
     def finish(self, result):
         """
@@ -59,5 +62,9 @@ class ManagementCommandLog(models.Model):
         This method does not save the object.
 
         """
+        if not self.started_at:
+            raise ValueError("Cannot call finish before start.")
+        if self.finished_at:
+            raise ValueError("Cannot call finish twice on the same log.")
         self.finished_at = now()
         self.result = result

@@ -1,5 +1,9 @@
 from command_log.bases import LoggedCommand
 
+# declared here so they can be referred to in tests
+EXCEPTION_MSG = "Forced error"
+DEFAULT_RETURN_VALUE = {"updated": 1}
+
 
 class Command(LoggedCommand):
 
@@ -17,5 +21,5 @@ class Command(LoggedCommand):
         error = options["error"]
         self.stdout.write(f"Running test command, --error={error}")
         if error:
-            raise Exception("Forced error")
-        return {"updated": 1}
+            raise Exception(EXCEPTION_MSG)
+        return DEFAULT_RETURN_VALUE
