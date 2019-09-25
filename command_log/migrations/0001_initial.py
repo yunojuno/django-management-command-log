@@ -7,21 +7,54 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ManagementCommandLog',
+            name="ManagementCommandLog",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('app_name', models.CharField(help_text='The app containing the management command', max_length=100)),
-                ('command_name', models.CharField(help_text='The management command that was executed', max_length=100)),
-                ('started_at', models.DateTimeField(blank=True, null=True)),
-                ('finished_at', models.DateTimeField(blank=True, null=True)),
-                ('exit_code', models.IntegerField(blank=True, default=None, help_text='0 if the command ran without error.', null=True)),
-                ('output',
-            models.TextField(blank=True, help_text='The output of the command (stored as a string)', null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "app_name",
+                    models.CharField(
+                        help_text="The app containing the management command",
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "command_name",
+                    models.CharField(
+                        help_text="The management command that was executed",
+                        max_length=100,
+                    ),
+                ),
+                ("started_at", models.DateTimeField(blank=True, null=True)),
+                ("finished_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "exit_code",
+                    models.IntegerField(
+                        blank=True,
+                        default=None,
+                        help_text="0 if the command ran without error.",
+                        null=True,
+                    ),
+                ),
+                (
+                    "output",
+                    models.TextField(
+                        blank=True,
+                        help_text="The output of the command (stored as a string)",
+                        null=True,
+                    ),
+                ),
             ],
-        ),
+        )
     ]

@@ -40,7 +40,7 @@ class LoggedCommand(BaseCommand):
             log.stop(output=output, exit_code=0)
         except Exception as ex:
             logger.exception("Error running management command: %s", log)
-            output = f"ERROR: see logs for full traceback [\"{ex}\"]."
+            output = f'ERROR: see logs for full traceback ["{ex}"].'
             log.stop(output=output, exit_code=1)
 
 
