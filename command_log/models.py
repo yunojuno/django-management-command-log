@@ -19,6 +19,8 @@ class ManagementCommandLog(models.Model):
     result = JSONField(
         default=dict,
         help_text="The return value of the command (must be JSON serializable)",
+        null=True,
+        blank=True
     )
 
     def __str__(self):

@@ -1,4 +1,4 @@
-from command_log.bases import LoggedCommand
+from command_log.commands import LoggedCommand
 
 # declared here so they can be referred to in tests
 EXCEPTION_MSG = "Forced error"

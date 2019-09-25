@@ -8,19 +8,46 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ManagementCommandLog',
+            name="ManagementCommandLog",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('app_name', models.CharField(help_text='The app containing the management command', max_length=100)),
-                ('command_name', models.CharField(help_text='The management command that was executed', max_length=100)),
-                ('started_at', models.DateTimeField()),
-                ('finished_at', models.DateTimeField()),
-                ('result', django.contrib.postgres.fields.jsonb.JSONField(default=dict, help_text='The return value of the command (must be JSON serializable)')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "app_name",
+                    models.CharField(
+                        help_text="The app containing the management command",
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "command_name",
+                    models.CharField(
+                        help_text="The management command that was executed",
+                        max_length=100,
+                    ),
+                ),
+                ("started_at", models.DateTimeField()),
+                ("finished_at", models.DateTimeField()),
+                (
+                    "result",
+                    django.contrib.postgres.fields.jsonb.JSONField(
+                        default=dict,
+                        help_text="The return value of the command (must be JSON serializable)",
+                        null=True,
+                        blank=True,
+                    ),
+                ),
             ],
-        ),
+        )
     ]
