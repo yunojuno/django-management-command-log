@@ -16,7 +16,7 @@ class ManagementCommandLog(models.Model):
     started_at = models.DateTimeField()
     finished_at = models.DateTimeField()
     exit_code = models.IntegerField(
-        max_length=3, default=0, help_text="0 if the command ran without error."
+        default=0, help_text="0 if the command ran without error."
     )
     result = JSONField(
         default=dict,
