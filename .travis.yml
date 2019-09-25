@@ -8,6 +8,8 @@ before_install:
 install:
   poetry install -v
 script:
-  poetry run pytest --cov=command_log tests
+  - poetry run isort --check-only --recursive command_log
+  - poetry run black --check command_log
+  - poetry run pytest --cov=command_log tests
 addons:
   postgresql: "9.6"
