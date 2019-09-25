@@ -1,8 +1,25 @@
 [tool.poetry]
 name = "django-command-log"
-version = "0.1.0"
+version = "0.1.1"
 description = "Django management command auditing app"
 authors = ["YunoJuno <code@yunojuno.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/yunojuno/django-managment-command-log"
+repository = "https://github.com/yunojuno/django-managment-command-log"
+classifiers = [
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 2.2",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.7",
+]
+packages = [
+    { include = "command_log" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
