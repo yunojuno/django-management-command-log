@@ -9,6 +9,13 @@ class Command(LoggedCommand):
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument(
+            "--null",
+            action="store_true",
+            dest="return_null",
+            default=False,
+            help="Return None rather than the default dict return value",
+        )
+        parser.add_argument(
             "--error",
             action="store_true",
             dest="error",
@@ -18,7 +25,8 @@ class Command(LoggedCommand):
 
     def do_command(self, *args, **options):
         error = options["error"]
-        self.stdout.write(f"Running test command, --error={error}")
+        return_null = options["return_null"]
+        self.stdout.write(f"Running test command, --error={error}, --null={return_null}")
         if error:
             raise Exception(EXCEPTION_MSG)
-        return DEFAULT_RETURN_VALUE
+        return None if return_null else DEFAULT_RETURN_VALUE
