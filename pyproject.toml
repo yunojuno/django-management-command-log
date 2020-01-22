@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "django-command-log"
-version = "0.2"
+version = "0.2.1"
 description = "Django management command auditing app"
 authors = ["YunoJuno <code@yunojuno.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/yunojuno/django-managment-command-log"
-repository = "https://github.com/yunojuno/django-managment-command-log"
+homepage = "https://github.com/yunojuno/django-management-command-log"
+repository = "https://github.com/yunojuno/django-management-command-log"
 classifiers = [
     "Environment :: Web Environment",
     "Intended Audience :: Developers",
