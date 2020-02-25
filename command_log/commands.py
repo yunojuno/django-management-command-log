@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+import datetime
 import logging
 from typing import Any
 
@@ -15,6 +17,16 @@ class DoNotCommit(Exception):
     """Exception used to indicate the --commit option is not set."""
 
     pass
+
+
+def isodate(date_str: str) -> datetime.date:
+    """Parse option string as isoformat date (YYYY-MM-DD)."""
+    try:
+        return datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            "Invalid date format - date options must be YYYY-MM-DD"
+        )
 
 
 class LoggedCommand(BaseCommand):
