@@ -10,6 +10,16 @@ from django.utils.timezone import now
 class ManagementCommandLog(models.Model):
     """Records the running of a management command."""
 
+    EXIT_CODE_SUCCESS = 0
+    EXIT_CODE_FAILURE = 1
+    EXIT_CODE_PARTIAL = 2
+
+    EXIT_CODE_CHOICES = (
+        (EXIT_CODE_SUCCESS, "0 - Succeeded"),
+        (EXIT_CODE_FAILURE, "1 - Failed"),
+        (EXIT_CODE_PARTIAL, "2 - Partial"),
+    )
+
     app_name = models.CharField(
         help_text="The app containing the management command", max_length=100
     )
@@ -20,13 +30,19 @@ class ManagementCommandLog(models.Model):
     finished_at = models.DateTimeField(null=True, blank=True)
     exit_code = models.IntegerField(
         default=None,
+        choices=EXIT_CODE_CHOICES,
         help_text="0 if the command ran without error.",
         null=True,
         blank=True,
     )
     output = models.TextField(
+        default="",
         help_text="The output of the command (stored as a string)",
-        null=True,
+        blank=True,
+    )
+    error = models.TextField(
+        default="",
+        help_text="Any error output captured",
         blank=True,
     )
 
@@ -57,7 +73,7 @@ class ManagementCommandLog(models.Model):
         self.started_at = now()
         self.save()
 
-    def stop(self, *, output: str, exit_code: int) -> None:
+    def stop(self, *, output: str, exit_code: int, error: Optional[Exception] = None) -> None:
         """Mark the end of a management command execution."""
         if not self.started_at:
             raise ValueError("Log object has not been started.")
@@ -65,5 +81,6 @@ class ManagementCommandLog(models.Model):
             raise ValueError("Log object has already completed.")
         self.finished_at = now()
         self.output = output
+        self.error = str(error) if error else ""
         self.exit_code = exit_code
         self.save()

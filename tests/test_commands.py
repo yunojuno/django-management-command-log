@@ -17,23 +17,35 @@ def test_command__exit_code_0():
     log = ManagementCommandLog.objects.get()
     assert log.exit_code == 0
     assert log.output == str(test_command.DEFAULT_RETURN_VALUE)
-
+    assert log.error == ""
 
 @pytest.mark.django_db
 def test_command__exit_code__date():
     call_command("test_command", start_date="2020-01-01")
     log = ManagementCommandLog.objects.get()
-    assert log.exit_code == 0
+    assert log.exit_code == ManagementCommandLog.EXIT_CODE_SUCCESS
     assert log.output == str({"start_date": "2020-01-01"})
+    assert log.error == ""
 
 
 @pytest.mark.django_db
 def test_command__exit_code_1():
-    call_command("test_command", "--error")
+    call_command("test_command", exit_code=ManagementCommandLog.EXIT_CODE_FAILURE)
     # implicit assert that there is only one object
     log = ManagementCommandLog.objects.get()
-    assert log.exit_code == 1
-    assert log.output.startswith("ERROR: see logs for full traceback")
+    assert log.exit_code == ManagementCommandLog.EXIT_CODE_FAILURE
+    assert log.error == test_command.EXCEPTION_MSG
+    assert log.output == ""
+
+
+@pytest.mark.django_db
+def test_command__exit_code_2():
+    call_command("test_command", exit_code=ManagementCommandLog.EXIT_CODE_PARTIAL)
+    # implicit assert that there is only one object
+    log = ManagementCommandLog.objects.get()
+    assert log.exit_code == ManagementCommandLog.EXIT_CODE_PARTIAL
+    assert log.output == str(test_command.DEFAULT_RETURN_VALUE)
+    assert log.error == test_command.EXCEPTION_MSG
 
 
 @pytest.mark.django_db

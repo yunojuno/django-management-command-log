@@ -19,6 +19,21 @@ class DoNotCommit(Exception):
     pass
 
 
+class PartialCompletionError(Exception):
+    """
+    Exception raised to indicate that the command partially succeeded.
+
+    In the event of a command partially completing, when the user does
+    not want to rollback the transaction, they should raise this error
+    to show that they want to store some output as well as the error
+    details.
+
+    """
+    def __init__(self, message: str, output: Any) -> None:
+        self.output = output
+        super().__init__(message)
+
+
 def isodate(date_str: str) -> datetime.date:
     """Parse option string as isoformat date (YYYY-MM-DD)."""
     try:
@@ -51,11 +66,13 @@ class LoggedCommand(BaseCommand):
         log.start()
         try:
             output = self.do_command(*args, **options)
-            log.stop(output=str(output), exit_code=0)
+            log.stop(output=str(output), exit_code=log.EXIT_CODE_SUCCESS)
+        except PartialCompletionError as ex:
+            logger.warning("Command partially completed")
+            log.stop(output=ex.output, exit_code=log.EXIT_CODE_PARTIAL, error=ex)
         except Exception as ex:  # pylint:disable=broad-except
             logger.exception("Error running management command: %s", log)
-            output = f'ERROR: see logs for full traceback ["{ex}"].'
-            log.stop(output=output, exit_code=1)
+            log.stop(output="", exit_code=log.EXIT_CODE_FAILURE, error=ex)
 
 
 class TransactionLoggedCommand(LoggedCommand):
