@@ -1,4 +1,5 @@
-from command_log.commands import LoggedCommand, isodate
+from command_log.models import ManagementCommandLog
+from command_log.commands import LoggedCommand, PartialCompletionError, isodate
 
 # declared here so they can be referred to in tests
 EXCEPTION_MSG = "Forced error"
@@ -16,32 +17,36 @@ class Command(LoggedCommand):
             help="Return None rather than the default dict return value",
         )
         parser.add_argument(
-            "--error",
-            action="store_true",
-            dest="error",
-            default=False,
-            help="Use this option to force the command to raise an exception",
-        )
-        parser.add_argument(
             "--start-date",
             action="store",
             dest="start_date",
             type=isodate,
             help="Parse as a date",
         )
+        parser.add_argument(
+            "--exit-code",
+            action="store",
+            dest="exit_code",
+            type=int,
+            default=ManagementCommandLog.EXIT_CODE_SUCCESS,
+            choices=ManagementCommandLog.EXIT_CODE_CHOICES,
+            help="Use this option to force a specific exit code."
+        )
 
     def do_command(self, *args, **options):
-        error = options["error"]
+        exit_code = options["exit_code"]
         return_null = options["return_null"]
         start_date = options.get("start_date")
         self.stdout.write(
             f"Running test command, "
-            f"--error={error}, "
+            f"--exit-code={exit_code}, "
             f"--null={return_null}, "
             f"--start_date={start_date}"
         )
-        if error:
+        if exit_code == ManagementCommandLog.EXIT_CODE_FAILURE:
             raise Exception(EXCEPTION_MSG)
+        if exit_code == ManagementCommandLog.EXIT_CODE_PARTIAL:
+            raise PartialCompletionError(EXCEPTION_MSG, output=DEFAULT_RETURN_VALUE)
         if return_null:
             return None
         if start_date:
