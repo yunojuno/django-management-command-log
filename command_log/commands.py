@@ -29,9 +29,9 @@ class PartialCompletionError(Exception):
     details.
 
     """
-    def __init__(self, *args, output: Any, **kwargs):
+    def __init__(self, message: str, output: Any) -> None:
         self.output = output
-        super().__init__(*args, **kwargs)
+        super().__init__(message)
 
 
 def isodate(date_str: str) -> datetime.date:

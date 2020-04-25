@@ -1,3 +1,4 @@
+from typing import Optional
 from django.contrib import admin
 
 from .models import ManagementCommandLog
@@ -18,12 +19,13 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
     )
     exclude = ("app_name", "command_name")
 
-    def exit_code_display(self, obj):
+    def exit_code_display(self, obj: ManagementCommandLog) -> Optional[bool]:
         """Display NullBoolean icons for exit code."""
         if obj.exit_code == ManagementCommandLog.EXIT_CODE_PARTIAL:
             return None
         return obj.exit_code == ManagementCommandLog.EXIT_CODE_SUCCESS
-    exit_code_display.boolean = True
-    exit_code_display.short_description = "Exit code"
+
+    exit_code_display.boolean = True  # type: ignore
+    exit_code_display.short_description = "Exit code"  # type: ignore
 
 admin.site.register(ManagementCommandLog, ManagementCommandLogAdmin)
