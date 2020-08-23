@@ -19,6 +19,7 @@ def test_command__exit_code_0():
     assert log.output == str(test_command.DEFAULT_RETURN_VALUE)
     assert log.error == ""
 
+
 @pytest.mark.django_db
 def test_command__exit_code__date():
     call_command("test_command", start_date="2020-01-01")

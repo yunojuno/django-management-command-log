@@ -1,8 +1,17 @@
+from distutils.version import StrictVersion
+from os import path
+
+import django
+
+DJANGO_VERSION = StrictVersion(django.get_version())
+
 DEBUG = True
-SECRET_KEY = "TOP_SECRET"
-DATABASES = {
-    "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "command_log.db"}
-}
+TEMPLATE_DEBUG = True
+USE_TZ = True
+USE_L10N = True
+
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "test.db",}}
+
 INSTALLED_APPS = (
     "django.contrib.admin",
     "django.contrib.auth",
@@ -13,31 +22,58 @@ INSTALLED_APPS = (
     "command_log",
     "tests",
 )
+
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
+    # default django middleware
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+PROJECT_DIR = path.abspath(path.join(path.dirname(__file__)))
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [path.join(PROJECT_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
-            "context_processors": {
-                "django.contrib.auth.context_processors.auth",
+            "context_processors": [
                 "django.contrib.messages.context_processors.messages",
-            }
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.request",
+            ]
         },
     }
 ]
-ROOT_URLCONF = "tests.urls"
-STATIC_ROOT = "static"
-STATIC_URL = "/static/"
-APPEND_SLASH = True
 
-assert DEBUG, "This application should be used for local testing only"
+STATIC_URL = "/static/"
+
+SECRET_KEY = "secret"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {"simple": {"format": "%(levelname)s %(message)s"}},
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        }
+    },
+    "loggers": {
+        "": {"handlers": ["console"], "propagate": True, "level": "DEBUG"},
+        # 'django': {
+        #     'handlers': ['console'],
+        #     'propagate': True,
+        #     'level': 'WARNING',
+        # },
+    },
+}
+
+ROOT_URLCONF = "tests.urls"
+
+assert DEBUG, "This settings file can only be used with DEBUG=True"

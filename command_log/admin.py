@@ -1,4 +1,5 @@
 from typing import Optional
+
 from django.contrib import admin
 
 from .models import ManagementCommandLog
@@ -15,7 +16,7 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
         "duration",
         "exit_code",
         "output",
-        "error"
+        "error",
     )
     exclude = ("app_name", "command_name")
 
@@ -27,5 +28,6 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
 
     exit_code_display.boolean = True  # type: ignore
     exit_code_display.short_description = "Exit code"  # type: ignore
+
 
 admin.site.register(ManagementCommandLog, ManagementCommandLogAdmin)

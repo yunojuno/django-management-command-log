@@ -29,6 +29,7 @@ class PartialCompletionError(Exception):
     details.
 
     """
+
     def __init__(self, message: str, output: Any) -> None:
         self.output = output
         super().__init__(message)

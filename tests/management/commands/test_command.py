@@ -1,5 +1,5 @@
-from command_log.models import ManagementCommandLog
 from command_log.commands import LoggedCommand, PartialCompletionError, isodate
+from command_log.models import ManagementCommandLog
 
 # declared here so they can be referred to in tests
 EXCEPTION_MSG = "Forced error"
@@ -30,7 +30,7 @@ class Command(LoggedCommand):
             type=int,
             default=ManagementCommandLog.EXIT_CODE_SUCCESS,
             choices=ManagementCommandLog.EXIT_CODE_CHOICES,
-            help="Use this option to force a specific exit code."
+            help="Use this option to force a specific exit code.",
         )
 
     def do_command(self, *args, **options):

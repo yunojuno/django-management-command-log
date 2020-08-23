@@ -41,9 +41,7 @@ class ManagementCommandLog(models.Model):
         blank=True,
     )
     error = models.TextField(
-        default="",
-        help_text="Any error output captured",
-        blank=True,
+        default="", help_text="Any error output captured", blank=True,
     )
 
     def __str__(self) -> str:
@@ -73,7 +71,9 @@ class ManagementCommandLog(models.Model):
         self.started_at = now()
         self.save()
 
-    def stop(self, *, output: str, exit_code: int, error: Optional[Exception] = None) -> None:
+    def stop(
+        self, *, output: str, exit_code: int, error: Optional[Exception] = None
+    ) -> None:
         """Mark the end of a management command execution."""
         if not self.started_at:
             raise ValueError("Log object has not been started.")
