@@ -41,7 +41,9 @@ class ManagementCommandLog(models.Model):
         blank=True,
     )
     error = models.TextField(
-        default="", help_text="Any error output captured", blank=True,
+        default="",
+        help_text="Any error output captured",
+        blank=True,
     )
 
     def __str__(self) -> str:
