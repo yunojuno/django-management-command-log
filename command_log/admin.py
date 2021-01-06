@@ -1,8 +1,22 @@
+from __future__ import annotations
+
+import ast
+import json
 from typing import Optional
 
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import ManagementCommandLog
+
+
+def pretty_print(data: Optional[dict]) -> str:
+    """Convert dict into formatted HTML."""
+    if data is None:
+        return ""
+    pretty = json.dumps(data, sort_keys=True, indent=4, separators=(",", ": "))
+    html = pretty.replace(" ", "&nbsp;").replace("\n", "<br>")
+    return mark_safe("<pre><code>%s</code></pre>" % html)
 
 
 class ManagementCommandLogAdmin(admin.ModelAdmin):
@@ -15,10 +29,20 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
         "finished_at",
         "duration",
         "exit_code",
-        "output",
+        "_output",
         "error",
     )
     exclude = ("app_name", "command_name")
+
+    def _output(self, obj: ManagementCommandLog) -> str:
+        """Format output as JSON if applicable."""
+        try:
+            data = ast.literal_eval(obj.output)
+            return pretty_print(data)
+        except Exception as ex:
+            return mark_safe(f"<pre><code>{obj.output}</code></pre>")
+
+    _output.short_description = "Output (formatted)"  # type: ignore
 
     def exit_code_display(self, obj: ManagementCommandLog) -> Optional[bool]:
         """Display NullBoolean icons for exit code."""
