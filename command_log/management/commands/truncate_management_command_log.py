@@ -31,7 +31,7 @@ class Command(TransactionLoggedCommand):
         "Truncate all log records that have passed their truncate_at timestamp."
     )
 
-    auto_expire = datetime.timedelta(seconds=10)
+    truncate_interval = datetime.timedelta(days=7)
 
     def do_command(self, *args: Any, **options: Any) -> Dict[str, Any]:
         logs = logs_to_truncate()

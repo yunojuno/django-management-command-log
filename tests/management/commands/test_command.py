@@ -1,3 +1,5 @@
+import datetime
+
 from command_log.commands import LoggedCommand, PartialCompletionError, isodate
 from command_log.models import ManagementCommandLog
 
@@ -7,6 +9,9 @@ DEFAULT_RETURN_VALUE = {"updated": 1}
 
 
 class Command(LoggedCommand):
+
+    truncate_interval = datetime.timedelta(seconds=10)
+
     def add_arguments(self, parser):
         super().add_arguments(parser)
         parser.add_argument(

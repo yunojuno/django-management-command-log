@@ -4,7 +4,7 @@ import datetime
 import pytest
 from django.core.management import call_command
 
-from command_log.commands import isodate
+from command_log.management.commands.base import isodate
 from command_log.models import ManagementCommandLog
 
 from .management.commands import test_command

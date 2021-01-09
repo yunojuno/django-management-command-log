@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import logging
-from typing import Any
+from typing import Any, Optional
 
 from django.core.management.base import BaseCommand, CommandParser
 from django.db import transaction
@@ -59,7 +59,17 @@ class LoggedCommand(BaseCommand):
 
     # interval after which the record can be deleted by
     # truncate_management_command_log command.
-    truncate_interval: datetime.timedelta = None
+    truncate_interval: Optional[datetime.timedelta] = None
+
+    def add_arguments(self, parser: CommandParser) -> None:
+        super().add_arguments(parser)
+        parser.add_argument(
+            "--no-truncate",
+            action="store_true",
+            default=False,
+            dest="no_truncate",
+            help="Override truncation_interval to set log to never expire."
+        )
 
     @property
     def app_name(self) -> str:
@@ -70,7 +80,10 @@ class LoggedCommand(BaseCommand):
         return self.__module__.split(".")[-1]
 
     @property
-    def truncate_at(self) -> datetime.datetime:
+    def truncate_at(self) -> Optional[datetime.datetime]:
+        """Return value to use for the ManagementCommandLog created."""
+        if self.no_truncate:  # set in handle method
+            return None
         if not self.truncate_interval:
             return None
         return tz_now() + self.truncate_interval
@@ -80,6 +93,7 @@ class LoggedCommand(BaseCommand):
 
     def handle(self, *args: Any, **options: Any) -> None:
         """Run the do_command method and log the output."""
+        self.no_truncate = options["no_truncate"]
         log = ManagementCommandLog(
             app_name=self.app_name,
             command_name=self.command_name,
