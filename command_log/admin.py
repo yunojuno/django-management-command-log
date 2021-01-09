@@ -31,15 +31,16 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
         "exit_code",
         "_output",
         "error",
+        "truncate_at",
     )
-    exclude = ("app_name", "command_name")
+    exclude = ("app_name", "command_name", "output")
 
     def _output(self, obj: ManagementCommandLog) -> str:
         """Format output as JSON if applicable."""
         try:
             data = ast.literal_eval(obj.output)
             return pretty_print(data)
-        except Exception as ex:
+        except Exception:
             return mark_safe(f"<pre><code>{obj.output}</code></pre>")
 
     _output.short_description = "Output (formatted)"  # type: ignore

@@ -45,6 +45,11 @@ class ManagementCommandLog(models.Model):
         help_text="Any error output captured",
         blank=True,
     )
+    truncate_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Timestamp after which record can be safely deleted.",
+    )
 
     def __str__(self) -> str:
         return f"{self.management_command} run at {self.started_at}"
