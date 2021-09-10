@@ -6,6 +6,14 @@ from django.db import models
 from django.utils.timezone import now
 
 
+class ManagementCommandLogQuerySet(models.QuerySet):
+    def succeeded(self) -> ManagementCommandLogQuerySet:
+        return self.filter(exit_code=ManagementCommandLog.EXIT_CODE_SUCCESS)
+
+    def failed(self) -> ManagementCommandLogQuerySet:
+        return self.filter(exit_code=ManagementCommandLog.EXIT_CODE_FAILURE)
+
+
 class ManagementCommandLog(models.Model):
     """Records the running of a management command."""
 
@@ -49,6 +57,7 @@ class ManagementCommandLog(models.Model):
         blank=True,
         help_text="Timestamp after which record can be safely deleted.",
     )
+    objects = ManagementCommandLogQuerySet().as_manager()
 
     def __str__(self) -> str:
         return f"{self.management_command} run at {self.started_at}"

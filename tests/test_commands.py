@@ -50,6 +50,12 @@ def test_command__exit_code_2():
 
 
 @pytest.mark.django_db
+def test_transaction_command__get_logs():
+    call_command("test_command")
+    assert ManagementCommandLog.objects.get() == test_command.Command().get_logs().get()
+
+
+@pytest.mark.django_db
 def test_transaction_command__commit():
     # without the --commit option no record is stored
     call_command("test_transaction_command", "--commit")
