@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand, CommandParser
 from django.db import transaction
 from django.utils.timezone import now as tz_now
 
-from command_log.models import ManagementCommandLog
+from command_log.models import ManagementCommandLog, ManagementCommandLogQuerySet
 
 logger = logging.getLogger("command_log")
 
@@ -87,6 +87,13 @@ class LoggedCommand(BaseCommand):
         if not self.truncate_interval:
             return None
         return tz_now() + self.truncate_interval
+
+    def get_logs(self) -> ManagementCommandLogQuerySet:
+        """Return all ManagementCommandLog objects relating this command."""
+        return ManagementCommandLog.objects.filter(
+            app_name=self.app_name,
+            command_name=self.command_name,
+        )
 
     def do_command(self, *args: Any, **options: Any) -> Any:
         raise NotImplementedError()
