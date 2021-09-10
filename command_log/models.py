@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-from typing import Optional
 
 from django.db import models
 from django.utils.timezone import now
@@ -65,7 +64,7 @@ class ManagementCommandLog(models.Model):
         return f"{self.app_name}.{self.command_name}"
 
     @property
-    def duration(self) -> Optional[datetime.timedelta]:
+    def duration(self) -> datetime.timedelta | None:
         try:
             return self.finished_at - self.started_at
         except TypeError:
@@ -79,7 +78,7 @@ class ManagementCommandLog(models.Model):
         self.save()
 
     def stop(
-        self, *, output: str, exit_code: int, error: Optional[Exception] = None
+        self, *, output: str, exit_code: int, error: Exception | None = None
     ) -> None:
         """Mark the end of a management command execution."""
         if not self.started_at:

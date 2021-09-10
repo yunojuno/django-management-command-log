@@ -3,13 +3,13 @@ from __future__ import annotations
 import argparse
 import datetime
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from django.core.management.base import BaseCommand, CommandParser
 from django.db import transaction
 from django.utils.timezone import now as tz_now
 
-from ...models import ManagementCommandLog
+from command_log.models import ManagementCommandLog
 
 logger = logging.getLogger("command_log")
 
@@ -59,7 +59,7 @@ class LoggedCommand(BaseCommand):
 
     # interval after which the record can be deleted by
     # truncate_management_command_log command.
-    truncate_interval: Optional[datetime.timedelta] = None
+    truncate_interval: datetime.timedelta | None = None
 
     def add_arguments(self, parser: CommandParser) -> None:
         super().add_arguments(parser)
@@ -68,7 +68,7 @@ class LoggedCommand(BaseCommand):
             action="store_true",
             default=False,
             dest="no_truncate",
-            help="Override truncation_interval to set log to never expire."
+            help="Override truncation_interval to set log to never expire.",
         )
 
     @property
@@ -80,7 +80,7 @@ class LoggedCommand(BaseCommand):
         return self.__module__.split(".")[-1]
 
     @property
-    def truncate_at(self) -> Optional[datetime.datetime]:
+    def truncate_at(self) -> datetime.datetime | None:
         """Return value to use for the ManagementCommandLog created."""
         if self.no_truncate:  # set in handle method
             return None
@@ -106,7 +106,7 @@ class LoggedCommand(BaseCommand):
         except PartialCompletionError as ex:
             logger.warning("Command partially completed")
             log.stop(output=ex.output, exit_code=log.EXIT_CODE_PARTIAL, error=ex)
-        except Exception as ex:  # pylint:disable=broad-except
+        except Exception as ex:  # noqa: B902
             logger.exception("Error running management command: %s", log)
             log.stop(output="", exit_code=log.EXIT_CODE_FAILURE, error=ex)
 

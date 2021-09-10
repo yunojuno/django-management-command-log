@@ -2,21 +2,20 @@ from __future__ import annotations
 
 import ast
 import json
-from typing import Optional
 
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import ManagementCommandLog
+from command_log.models import ManagementCommandLog
 
 
-def pretty_print(data: Optional[dict]) -> str:
+def pretty_print(data: dict | None) -> str:
     """Convert dict into formatted HTML."""
     if data is None:
         return ""
     pretty = json.dumps(data, sort_keys=True, indent=4, separators=(",", ": "))
     html = pretty.replace(" ", "&nbsp;").replace("\n", "<br>")
-    return mark_safe("<pre><code>%s</code></pre>" % html)
+    return mark_safe("<pre><code>%s</code></pre>" % html)  # noqa: S308, S703
 
 
 class ManagementCommandLogAdmin(admin.ModelAdmin):
@@ -40,12 +39,14 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
         try:
             data = ast.literal_eval(obj.output)
             return pretty_print(data)
-        except Exception:
-            return mark_safe(f"<pre><code>{obj.output}</code></pre>")
+        except Exception:  # noqa: B902
+            return mark_safe(  # noqa: S308, S703
+                f"<pre><code>{obj.output}</code></pre>"
+            )
 
     _output.short_description = "Output (formatted)"  # type: ignore
 
-    def exit_code_display(self, obj: ManagementCommandLog) -> Optional[bool]:
+    def exit_code_display(self, obj: ManagementCommandLog) -> bool | None:
         """Display NullBoolean icons for exit code."""
         if obj.exit_code == ManagementCommandLog.EXIT_CODE_PARTIAL:
             return None

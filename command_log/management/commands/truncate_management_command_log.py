@@ -6,8 +6,8 @@ from django.db.models.query import QuerySet
 from django.utils.timezone import now as tz_now
 from django.utils.translation import gettext_lazy as _lazy
 
-from ...models import ManagementCommandLog
-from .base import TransactionLoggedCommand
+from command_log.management.commands.base import TransactionLoggedCommand
+from command_log.models import ManagementCommandLog
 
 
 def logs_to_truncate() -> QuerySet:

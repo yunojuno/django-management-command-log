@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-command-log"
-version = "0.4.1"
+version = "0.5"
 description = "Django management command auditing app"
 authors = ["YunoJuno <code@yunojuno.com>"]
 license = "MIT"
@@ -16,6 +16,7 @@ classifiers = [
     "Framework :: Django :: 2.2",
     "Framework :: Django :: 3.0",
     "Framework :: Django :: 3.1",
+    "Framework :: Django :: 3.2",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.7",
@@ -27,7 +28,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 django = "^2.2 || ^3.0"
 
 [tool.poetry.dev-dependencies]
@@ -35,11 +36,13 @@ black = {version="*", allow-prereleases=true}
 coverage = "*"
 flake8 = "*"
 flake8-bandit = "*"
+flake8-blind-except = "*"
 flake8-docstrings = "*"
+flake8-logging-format = "*"
+flake8-print = "*"
 isort = "*"
 mypy = "*"
 pre-commit = "*"
-pylint = "*"
 pylint-django = "*"
 pytest = "*"
 pytest-cov = "*"
