@@ -4,10 +4,8 @@ App to enable simple auditing of Django management commands
 
 ### Version support
 
-This project now support Django 2.2 and 3.0, and Python 3.7 and 3.8. Python 3.6
-has been deprecated because the lack of support for `__future__.annotations`
-makes type hinting across 3.6-3.7 complicated. See git tags and PyPI classifiers
-for support.
+This project now support Django 2.2+, and Python 3.7+.
+See git tags and PyPI classifiers for support.
 
 ## Background
 
