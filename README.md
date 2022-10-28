@@ -4,12 +4,12 @@ App to enable simple auditing of Django management commands
 
 ### Version support
 
-This project now support Django 2.2+, and Python 3.7+.
+This project now support Django 3.2+, and Python 3.7+.
 See git tags and PyPI classifiers for support.
 
 ## Background
 
-This app wraps the standad Django management command base class to record the
+This app wraps the standard Django management command base class to record the
 running of a command. It logs the name of the command, start and end time, and
 the output (if any). If the command fails with a Python exception, the error
 message is added to the record, and the exception itself is logged using
