@@ -2,11 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## v1.1
+## v2.0 [unreleased]
 
+* Remove support for Python 3.7
 * Add support for Python 3.11
-* Add support for Django 4.1
 * Remove support for Django 3.1, 3.0, 2.2
+* Add support for Django 4.1
 
 ## v1.0
 

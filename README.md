@@ -4,7 +4,7 @@ App to enable simple auditing of Django management commands
 
 ### Version support
 
-This project now support Django 3.2+, and Python 3.7+.
+This project now support Django 3.2+, and Python 3.8+.
 See git tags and PyPI classifiers for support.
 
 ## Background
