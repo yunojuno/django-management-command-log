@@ -6,7 +6,6 @@ from command_log.models import ManagementCommandLog
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("command_log", "0001_initial"),
     ]

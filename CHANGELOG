@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## v2.0 [unreleased]
+## v2.1
+
+* Add Django 5.0 to build matrix
+* Add Python 3.12 to build matrix
+
+No code changes.
+
+## v2.0
 
 * Remove support for Python 3.7
 * Add support for Python 3.11

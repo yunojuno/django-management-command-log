@@ -9,7 +9,6 @@ DEFAULT_RETURN_VALUE = {"updated": 1}
 
 
 class Command(LoggedCommand):
-
     truncate_interval = datetime.timedelta(seconds=10)
 
     def add_arguments(self, parser):

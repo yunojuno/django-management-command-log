@@ -26,8 +26,7 @@ def breakdown_by_name(queryset: QuerySet) -> Dict[str, int]:
 
 
 class Command(TransactionLoggedCommand):
-
-    help = _lazy(
+    help = _lazy(  # noqa: A003
         "Truncate all log records that have passed their truncate_at timestamp."
     )
 

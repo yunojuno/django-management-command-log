@@ -58,7 +58,7 @@ def test_command__exit_code_2():
 @pytest.mark.django_db
 class TestDisableModelSignalsOption:
     @pytest.mark.parametrize("model_signals_disabled", (True, False))
-    @patch(f"tests.management.commands.test_command.Command.do_command")
+    @patch("tests.management.commands.test_command.Command.do_command")
     def test_disables_model_signals_during_do_command(
         self,
         do_command: Mock,
