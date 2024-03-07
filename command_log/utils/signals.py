@@ -31,6 +31,7 @@ def disable_signals(signals: Iterable[Signal]) -> Iterator[None]:
 
         with disable_signals(MODEL_SIGNALS):
             do_things()
+
     """
     stashed_receivers: dict[Signal, list] = {}
 

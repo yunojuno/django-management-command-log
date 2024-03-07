@@ -39,7 +39,6 @@ pytest-cov = "*"
 pytest-django = "*"
 
 [tool.poetry.group.dev.dependencies]
-black = "*"
 mypy = "*"
 pre-commit = "*"
 ruff = "*"
