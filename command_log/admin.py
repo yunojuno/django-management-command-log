@@ -50,10 +50,10 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
     list_display = ("management_command", "started_at", "duration", "exit_code_display")
     list_filter = (
         "started_at",
+        StatusListFilter,
+        "exit_code",
         "app_name",
         "command_name",
-        "exit_code",
-        StatusListFilter,
     )
     search_fields = ("command_name",)
     readonly_fields = (
