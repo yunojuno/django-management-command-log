@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.2
+
+* Add "In progress" filter to admin list view (#13)
+
 ## v2.1
 
 * Add Django 5.0 to build matrix
