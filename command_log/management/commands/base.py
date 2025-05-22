@@ -126,7 +126,7 @@ class LoggedCommand(BaseCommand):
         except PartialCompletionError as ex:
             logger.warning("Command partially completed")
             log.stop(output=ex.output, exit_code=log.EXIT_CODE_PARTIAL, error=ex)
-        except Exception as ex:  # noqa: B902
+        except Exception as ex:  # noqa: BLE001
             logger.exception("Error running management command: %s", log)
             log.stop(output="", exit_code=log.EXIT_CODE_FAILURE, error=ex)
 
