@@ -17,7 +17,7 @@ def pretty_print(data: dict | None) -> str:
         return ""
     pretty = json.dumps(data, sort_keys=True, indent=4, separators=(",", ": "))
     html = pretty.replace(" ", "&nbsp;").replace("\n", "<br>")
-    return mark_safe("<pre><code>%s</code></pre>" % html)  # noqa: S308, S703
+    return mark_safe("<pre><code>%s</code></pre>" % html)  # noqa: S308
 
 
 class StatusListFilter(admin.SimpleListFilter):
@@ -73,10 +73,8 @@ class ManagementCommandLogAdmin(admin.ModelAdmin):
         try:
             data = ast.literal_eval(obj.output)
             return pretty_print(data)
-        except Exception:  # noqa: B902
-            return mark_safe(  # noqa: S308, S703
-                f"<pre><code>{obj.output}</code></pre>"
-            )
+        except Exception:  # noqa: BLE001
+            return mark_safe(f"<pre><code>{obj.output}</code></pre>")  # noqa: S308
 
     _output.short_description = "Output (formatted)"  # type: ignore
 

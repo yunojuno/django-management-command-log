@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-command-log"
-version = "2.1"
+version = "2.2"
 description = "Django management command auditing app"
 authors = ["YunoJuno <code@yunojuno.com>"]
 license = "MIT"
@@ -13,11 +13,9 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Framework :: Django",
-    "Framework :: Django :: 3.2",
-    "Framework :: Django :: 4.0",
-    "Framework :: Django :: 4.1",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.2",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.8",
@@ -30,7 +28,7 @@ packages = [{ include = "command_log" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = "^3.2 || ^4.0 || ^5.0"
+django = "^4.2 || ^5.0"
 
 [tool.poetry.group.test.dependencies]
 coverage = "*"
