@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-command-log"
-version = "2.2"
+version = "2.2.1"
 description = "Django management command auditing app"
 authors = ["YunoJuno <code@yunojuno.com>"]
 license = "MIT"
